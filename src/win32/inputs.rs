@@ -1,0 +1,186 @@
+use windows_sys::Win32::UI::Input::KeyboardAndMouse::{
+    VK_0, VK_1, VK_2, VK_3, VK_4, VK_5, VK_6, VK_7, VK_8, VK_9, VK_A, VK_ACCEPT, VK_ADD, VK_APPS,
+    VK_B, VK_BACK, VK_C, VK_CAPITAL, VK_CLEAR, VK_CONTROL, VK_CONVERT, VK_D, VK_DECIMAL, VK_DELETE,
+    VK_DIVIDE, VK_DOWN, VK_E, VK_END, VK_ESCAPE, VK_EXECUTE, VK_F, VK_F1, VK_F10, VK_F11, VK_F12,
+    VK_F13, VK_F14, VK_F15, VK_F16, VK_F17, VK_F18, VK_F19, VK_F2, VK_F20, VK_F21, VK_F22, VK_F23,
+    VK_F24, VK_F3, VK_F4, VK_F5, VK_F6, VK_F7, VK_F8, VK_F9, VK_G, VK_H, VK_HELP, VK_HOME, VK_I,
+    VK_INSERT, VK_J, VK_K, VK_L, VK_LCONTROL, VK_LEFT, VK_LMENU, VK_LSHIFT, VK_LWIN, VK_M,
+    VK_MEDIA_NEXT_TRACK, VK_MEDIA_PLAY_PAUSE, VK_MEDIA_PREV_TRACK, VK_MEDIA_STOP, VK_MENU,
+    VK_MODECHANGE, VK_MULTIPLY, VK_N, VK_NEXT, VK_NONCONVERT, VK_NUMLOCK, VK_NUMPAD0, VK_NUMPAD1,
+    VK_NUMPAD2, VK_NUMPAD3, VK_NUMPAD4, VK_NUMPAD5, VK_NUMPAD6, VK_NUMPAD7, VK_NUMPAD8, VK_NUMPAD9,
+    VK_O, VK_OEM_1, VK_OEM_102, VK_OEM_2, VK_OEM_3, VK_OEM_5, VK_OEM_COMMA, VK_OEM_MINUS,
+    VK_OEM_NEC_EQUAL, VK_OEM_PERIOD, VK_OEM_PLUS, VK_P, VK_PAUSE, VK_PRINT, VK_PRIOR, VK_Q, VK_R,
+    VK_RCONTROL, VK_RETURN, VK_RIGHT, VK_RMENU, VK_RSHIFT, VK_RWIN, VK_S, VK_SCROLL, VK_SELECT,
+    VK_SEPARATOR, VK_SHIFT, VK_SLEEP, VK_SNAPSHOT, VK_SPACE, VK_SUBTRACT, VK_T, VK_TAB, VK_U,
+    VK_UP, VK_V, VK_VOLUME_DOWN, VK_VOLUME_MUTE, VK_VOLUME_UP, VK_W, VK_X, VK_Y, VK_Z,
+};
+
+use crate::inputs::Key;
+
+impl Key {
+    #[inline]
+    #[must_use]
+    #[allow(clippy::too_many_lines, clippy::match_same_arms)]
+    pub fn from_win32_key(key: u16) -> Self {
+        #[allow(overflowing_literals)]
+        match key {
+            VK_BACK => Self::BackSpace,
+            VK_TAB => Self::Tab,
+            VK_CLEAR => Self::Clear,
+            VK_RETURN => Self::Enter,
+            VK_SHIFT => Self::Shift,
+            VK_CONTROL => Self::Ctrl,
+            VK_MENU => Self::Menu,
+
+            VK_PAUSE => Self::Pause,
+            VK_CAPITAL => Self::Caps,
+
+            VK_ESCAPE => Self::Esc,
+
+            VK_CONVERT => Self::Convert,
+            VK_NONCONVERT => Self::NonConvert,
+            VK_ACCEPT => Self::Accept,
+            VK_MODECHANGE => Self::ModeChange,
+
+            VK_SPACE => Self::Space,
+            VK_PRIOR => Self::Prior,
+            VK_NEXT => Self::Next,
+            VK_END => Self::End,
+            VK_HOME => Self::Home,
+
+            VK_LEFT => Self::Left,
+            VK_UP => Self::Up,
+            VK_RIGHT => Self::Right,
+            VK_DOWN => Self::Down,
+
+            VK_SELECT => Self::Select,
+            VK_PRINT => Self::Print,
+            VK_EXECUTE => Self::Execute,
+            VK_SNAPSHOT => Self::Snapshot,
+            VK_INSERT => Self::Insert,
+            VK_DELETE => Self::Delete,
+            VK_HELP => Self::Help,
+
+            VK_0 => Self::Digit0,
+            VK_1 => Self::Digit1,
+            VK_2 => Self::Digit2,
+            VK_3 => Self::Digit3,
+            VK_4 => Self::Digit4,
+            VK_5 => Self::Digit5,
+            VK_6 => Self::Digit6,
+            VK_7 => Self::Digit7,
+            VK_8 => Self::Digit8,
+            VK_9 => Self::Digit9,
+
+            VK_A => Self::A,
+            VK_B => Self::B,
+            VK_C => Self::C,
+            VK_D => Self::D,
+            VK_E => Self::E,
+            VK_F => Self::F,
+            VK_G => Self::G,
+            VK_H => Self::H,
+            VK_I => Self::I,
+            VK_J => Self::J,
+            VK_K => Self::K,
+            VK_L => Self::L,
+            VK_M => Self::M,
+            VK_N => Self::N,
+            VK_O => Self::O,
+            VK_P => Self::P,
+            VK_Q => Self::Q,
+            VK_R => Self::R,
+            VK_S => Self::S,
+            VK_T => Self::T,
+            VK_U => Self::U,
+            VK_V => Self::V,
+            VK_W => Self::W,
+            VK_X => Self::X,
+            VK_Y => Self::Y,
+            VK_Z => Self::Z,
+
+            VK_LWIN => Self::LWin,
+            VK_RWIN => Self::RWin,
+            VK_APPS => Self::Apps,
+
+            VK_SLEEP => Self::Sleep,
+
+            VK_NUMPAD0 => Self::Num0,
+            VK_NUMPAD1 => Self::Num1,
+            VK_NUMPAD2 => Self::Num2,
+            VK_NUMPAD3 => Self::Num3,
+            VK_NUMPAD4 => Self::Num4,
+            VK_NUMPAD5 => Self::Num5,
+            VK_NUMPAD6 => Self::Num6,
+            VK_NUMPAD7 => Self::Num7,
+            VK_NUMPAD8 => Self::Num8,
+            VK_NUMPAD9 => Self::Num9,
+            VK_MULTIPLY => Self::Multiply,
+            VK_ADD => Self::Add,
+            VK_SEPARATOR => Self::Seperator,
+            VK_SUBTRACT => Self::Subtract,
+            VK_DECIMAL => Self::Decimal,
+            VK_DIVIDE => Self::Divide,
+
+            VK_F1 => Self::F1,
+            VK_F2 => Self::F2,
+            VK_F3 => Self::F3,
+            VK_F4 => Self::F4,
+            VK_F5 => Self::F5,
+            VK_F6 => Self::F6,
+            VK_F7 => Self::F7,
+            VK_F8 => Self::F8,
+            VK_F9 => Self::F9,
+            VK_F10 => Self::F10,
+            VK_F11 => Self::F11,
+            VK_F12 => Self::F12,
+            VK_F13 => Self::F13,
+            VK_F14 => Self::F14,
+            VK_F15 => Self::F15,
+            VK_F16 => Self::F16,
+            VK_F17 => Self::F17,
+            VK_F18 => Self::F18,
+            VK_F19 => Self::F19,
+            VK_F20 => Self::F20,
+            VK_F21 => Self::F21,
+            VK_F22 => Self::F22,
+            VK_F23 => Self::F23,
+            VK_F24 => Self::F24,
+
+            VK_NUMLOCK => Self::NumLock,
+            VK_SCROLL => Self::Scroll,
+
+            VK_OEM_NEC_EQUAL => Self::NumEqual,
+
+            VK_LMENU => Self::LAlt,
+            VK_RMENU => Self::RAlt,
+            VK_LSHIFT => Self::LShift,
+            VK_RSHIFT => Self::RShift,
+            VK_LCONTROL => Self::LCtrl,
+            VK_RCONTROL => Self::RCtrl,
+
+            VK_VOLUME_MUTE => Self::VolumeMute,
+            VK_VOLUME_DOWN => Self::VolumeDown,
+            VK_VOLUME_UP => Self::VolumeUp,
+
+            VK_MEDIA_NEXT_TRACK => Self::MediaNext,
+            VK_MEDIA_PLAY_PAUSE => Self::MediaPause,
+            VK_MEDIA_PREV_TRACK => Self::MediaPrev,
+            VK_MEDIA_STOP => Self::MediaStop,
+
+            VK_OEM_1 => Self::Semicolon,
+            VK_OEM_PLUS => Self::Plus,
+            VK_OEM_COMMA => Self::Comma,
+            VK_OEM_MINUS => Self::Minus,
+            VK_OEM_PERIOD => Self::Period,
+            VK_OEM_2 => Self::Slash,
+            VK_OEM_3 => Self::Grave,
+
+            VK_OEM_5 => Self::Grave,
+
+            VK_OEM_102 => Self::Bracket,
+
+            _ => todo!("unmapped key: {key}"),
+        }
+    }
+}
