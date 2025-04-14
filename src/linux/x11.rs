@@ -1,17 +1,17 @@
-use std::sync::Arc;
+use std::{ffi::CString, sync::Arc};
 
 use x11rb::{
+    COPY_DEPTH_FROM_PARENT,
     connection::Connection as _,
     protocol::xproto::{
         AtomEnum, ConnectionExt, CreateWindowAux, EventMask, PropMode, WindowClass,
     },
     wrapper::ConnectionExt as _,
     xcb_ffi::XCBConnection,
-    COPY_DEPTH_FROM_PARENT,
 };
 
-use crate::events::{KeyEvent, MouseButtonEvent, MouseMoveEvent, WindowEvent, WindowResizeEvent};
 use crate::WindowImpl;
+use crate::events::{KeyEvent, MouseButtonEvent, MouseMoveEvent, WindowEvent, WindowResizeEvent};
 
 x11rb::atom_manager! {
     pub Atoms: AtomsCookie {
@@ -98,6 +98,22 @@ impl WindowImpl for Window {
     fn show(&self) -> Result<(), super::Error> {
         self.conn.map_window(self.window)?;
         self.conn.flush()?;
+        Ok(())
+    }
+
+    fn set_title(&self, title: &str) -> Result<(), super::Error> {
+        let title = CString::new(title).unwrap();
+
+        self.conn.change_property8(
+            PropMode::REPLACE,
+            self.window,
+            AtomEnum::WM_NAME,
+            AtomEnum::STRING,
+            title.as_bytes(),
+        )?;
+
+        self.conn.flush()?;
+
         Ok(())
     }
 
