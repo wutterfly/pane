@@ -18,9 +18,9 @@ use windows_sys::{
             AdjustWindowRectEx, CS_DBLCLKS, CreateWindowExW, DefWindowProcW, DestroyWindow,
             DispatchMessageW, GWLP_USERDATA, GetClientRect, GetWindowLongPtrW, IDC_ARROW,
             IDI_APPLICATION, LoadCursorW, LoadIconW, MSG, PM_REMOVE, PeekMessageW, PostQuitMessage,
-            RegisterClassExW, SW_SHOW, SW_SHOWNOACTIVATE, SetWindowLongPtrW, ShowWindow,
-            TranslateMessage, WM_CLOSE, WM_DESTROY, WM_ERASEBKGND, WM_KEYDOWN, WM_KEYUP,
-            WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MBUTTONDOWN, WM_MBUTTONUP, WM_MOUSEMOVE,
+            RegisterClassExW, SW_SHOW, SW_SHOWNOACTIVATE, SetWindowLongPtrW, SetWindowTextW,
+            ShowWindow, TranslateMessage, WM_CLOSE, WM_DESTROY, WM_ERASEBKGND, WM_KEYDOWN,
+            WM_KEYUP, WM_LBUTTONDOWN, WM_LBUTTONUP, WM_MBUTTONDOWN, WM_MBUTTONUP, WM_MOUSEMOVE,
             WM_MOUSEWHEEL, WM_RBUTTONDOWN, WM_RBUTTONUP, WM_SIZE, WM_SYSKEYDOWN, WM_SYSKEYUP,
             WNDCLASSEXW, WS_CAPTION, WS_EX_APPWINDOW, WS_MAXIMIZEBOX, WS_MINIMIZEBOX,
             WS_OVERLAPPED, WS_OVERLAPPEDWINDOW, WS_SYSMENU, WS_THICKFRAME,
@@ -166,10 +166,23 @@ impl WindowImpl for Window {
             SW_SHOWNOACTIVATE
         };
 
-        let ret = unsafe { ShowWindow(self.handle, flags) };
-        if ret != 0 {
+        // If the window was previously visible, the return value is nonzero.
+        // If the window was previously hidden, the return value is zero.
+        let _ = unsafe { ShowWindow(self.handle, flags) };
+
+        Ok(())
+    }
+
+    fn set_title(&self, title: &str) -> Result<(), Error> {
+        let title = win32_string(title);
+
+        let ret = unsafe { SetWindowTextW(self.handle, title.as_ptr()) };
+
+        // If the function succeeds, the return value is nonzero.
+        // If the function fails, the return value is zero.
+        if ret == 0 {
             let err = std::io::Error::last_os_error();
-            return Err(Error::ShowWindow(err));
+            return Err(Error::SetTitle(err));
         }
 
         Ok(())

@@ -3,6 +3,7 @@ pub enum Error {
     RegisterWindowClass(std::io::Error),
     CreateWindow(std::io::Error),
     ShowWindow(std::io::Error),
+    SetTitle(std::io::Error),
 }
 
 impl Error {
@@ -27,6 +28,7 @@ impl std::fmt::Display for Error {
             Self::RegisterWindowClass(err) => write!(f, "Failed to register window class: {err}"),
             Self::CreateWindow(err) => write!(f, "Failed to create window: {err}"),
             Self::ShowWindow(err) => write!(f, "Failed to show window:  {err}"),
+            Self::SetTitle(err) => write!(f, "Failed to set title: {err}"),
         }
     }
 }

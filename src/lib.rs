@@ -39,6 +39,8 @@ trait WindowImpl {
 
     fn show(&self) -> Result<(), Error>;
 
+    fn set_title(&self, title: &str) -> Result<(), Error>;
+
     fn destroy(self);
 
     fn pump_messages(&mut self) -> Result<(), Error>;
@@ -84,6 +86,14 @@ impl Window {
     #[inline]
     pub fn show(&self) -> Result<(), crate::Error> {
         <TargetWindow as WindowImpl>::show(&self.window)
+    }
+
+    /// Sets the title of the window.
+    ///
+    /// # Errors
+    #[inline]
+    pub fn set_title(&self, title: &str) -> Result<(), crate::Error> {
+        <TargetWindow as WindowImpl>::set_title(&self.window, title)
     }
 
     /// Destroys the window.
